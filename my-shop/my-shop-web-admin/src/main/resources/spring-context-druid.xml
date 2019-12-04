@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <!--    加载配置属性文件-->
+    <context:property-placeholder ignore-unresolvable="true" location="classpath:myshop.properties"/>
+<!--    init-method 初始化会调用init方法 destroy-method会调用close方法-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+<!--        数据源驱动类可不写,Druid默认会自动根据URL识别DriverClass-->
+        <property name="driverClassName" value="${jdbc.driverClass}"/>
+
+<!--        基本属性url username passworld -->
+        <property name="url" value="${jdbc.connectionURL}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+
+<!--        配置初始化大小 最大 最小-->
+        <property name="initialSize" value="${jdbc.pool.init}"/>
+        <property name="maxActive" value="${jdbc.pool.maxActive}"/>
+        <property name="minIdle" value="${jdbc.pool.minldle}"/>
+
+<!--        配置获取连接等待超时时间-->
+        <property name="maxWait" value="6000"/>
+
+<!--        配置间隔多久才进行一次检测,检测需要关闭的空闲连接,单位毫秒-->
+        <property name="timeBetweenEvictionRunsMillis" value="6000"/>
+
+<!--        配置一个连接在池中最小生存时间,单位是毫秒-->
+        <property name="minEvictableIdleTimeMillis" value="300000"/>
+        
+<!--        测试需要的一些-->
+        <property name="validationQuery" value="${jdbc.testSql}"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="testOnReturn" value="true"/>
+
+<!--        配置监控统计的filters-->
+        <property name="filters" value="stat"/>
+
+    </bean>
+</beans>
